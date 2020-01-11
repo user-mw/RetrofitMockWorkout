@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">RetrofitMockWorkout</string>
+	<string name="title_text">Title</string>
+	<string name="empty_message">There is no any car</string>
+</resources>
