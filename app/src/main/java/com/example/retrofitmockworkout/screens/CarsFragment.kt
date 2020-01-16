@@ -9,12 +9,15 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.retrofitmockworkout.R
 import com.example.retrofitmockworkout.custom_di.BadPresenterFactory
+import com.example.retrofitmockworkout.custom_di.BadPresenterFactoryComponent
+import com.example.retrofitmockworkout.custom_di.PresenterFactory
+import com.example.retrofitmockworkout.custom_di.PresenterFactoryInjector
 import com.example.retrofitmockworkout.domain.Car
 import com.example.retrofitmockworkout.presentation.CarsPresenter
 import com.example.retrofitmockworkout.presentation.CarsView
 import kotlinx.android.synthetic.main.cars_fragment.*
 
-class CarsFragment : Fragment(), CarsView {
+class CarsFragment : Fragment(), CarsView, PresenterFactoryInjector {
 
     companion object {
 
@@ -28,10 +31,18 @@ class CarsFragment : Fragment(), CarsView {
         }
     }
 
-    private val presenter: CarsPresenter = BadPresenterFactory.create()
+    private lateinit var presenterFactory: PresenterFactory
+    private lateinit var presenter: CarsPresenter
     private lateinit var adapter: ItemsAdapter
     private val onClickListener: (Int) -> Unit = { id ->
         presenter.onItemClick(id)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        BadPresenterFactoryComponent().inject(this)
+        presenter = presenterFactory.create()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -44,6 +55,10 @@ class CarsFragment : Fragment(), CarsView {
         itemsRecycler.layoutManager = LinearLayoutManager(requireActivity())
 
         presenter.onAttach(this)
+    }
+
+    override fun inject(factory: PresenterFactory) {
+        presenterFactory = factory
     }
 
     override fun showItems(cars: List<Car>) {

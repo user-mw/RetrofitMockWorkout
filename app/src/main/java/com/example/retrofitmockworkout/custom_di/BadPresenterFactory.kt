@@ -8,22 +8,13 @@ import com.example.retrofitmockworkout.domain.GetSingleCarUseCaseImpl
 import com.example.retrofitmockworkout.presentation.CarsPresenter
 
 // Created just because there is no Dagger
-class BadPresenterFactory private constructor() {
-
-    companion object {
-
-        fun create(): CarsPresenter {
-            val factory = BadPresenterFactory()
-
-            return factory.create()
-        }
-    }
+class BadPresenterFactory : PresenterFactory {
 
     private val carsApi = RetrofitProvider().provideApi()
     private val repository = CarsRepositoryImpl(CarsDataSource(carsApi))
     private val getCarsUseCase = GetCarsUseCaseImpl(repository)
     private val getSingleCarUseCase = GetSingleCarUseCaseImpl(repository)
 
-    private fun create(): CarsPresenter =
+    override fun create(): CarsPresenter =
         CarsPresenter(getCarsUseCase, getSingleCarUseCase)
 }
