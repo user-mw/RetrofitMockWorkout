@@ -1,15 +1,15 @@
 package com.example.retrofitmockworkout.presentation
 
-import com.example.retrofitmockworkout.domain.GetItemsUseCase
-import com.example.retrofitmockworkout.domain.GetCarUseCase
+import com.example.retrofitmockworkout.domain.GetCarsUseCase
+import com.example.retrofitmockworkout.domain.GetSingleCarUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 
 class CarsPresenter(
-    val useCase: GetItemsUseCase,
-    val getCarUseCase: GetCarUseCase
+    private val useCase: GetCarsUseCase,
+    private val getSingleCarUseCase: GetSingleCarUseCase
     ) {
 
     private val compositeDisposable = CompositeDisposable()
@@ -32,7 +32,7 @@ class CarsPresenter(
     }
 
     fun onItemClick(mockCarId: Int) {
-        getCarUseCase(mockCarId)
+        getSingleCarUseCase(mockCarId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(

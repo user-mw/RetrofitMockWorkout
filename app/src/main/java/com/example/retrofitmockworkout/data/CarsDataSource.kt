@@ -3,7 +3,7 @@ package com.example.retrofitmockworkout.data
 import com.example.retrofitmockworkout.domain.Car
 import io.reactivex.Single
 
-class CarsDataSource(private val carsApi: CarsAPI = RetrofitProvider().provideApi()) {
+class CarsDataSource(private val carsApi: CarsAPI) {
 
     fun getCars(): Single<List<Car>> {
         return carsApi.getCars()
