@@ -1,8 +1,10 @@
 package com.example.retrofitmockworkout.custom_di
 
-class BadPresenterFactoryComponent {
+import android.content.Context
+
+class BadPresenterFactoryComponent(private val context: Context) {
 
     fun inject(factoryInjector: PresenterFactoryInjector) {
-        factoryInjector.inject(BadPresenterFactory())
+        factoryInjector.inject(BadPresenterFactory(context))
     }
 }

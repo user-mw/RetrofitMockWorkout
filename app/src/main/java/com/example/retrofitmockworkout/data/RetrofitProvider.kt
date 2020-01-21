@@ -1,7 +1,9 @@
 package com.example.retrofitmockworkout.data
 
+import android.content.Context
 import com.example.retrofitmockworkout.BuildConfig
 import com.example.retrofitmockworkout.data.mock_api_server.MockApiInterceptor
+import com.example.retrofitmockworkout.data.mock_api_server.MockDataProvider
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -9,10 +11,10 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
-class RetrofitProvider {
+class RetrofitProvider(context: Context) {
 
     private val loggingInterceptor = HttpLoggingInterceptor()
-    private val mockInterceptor = MockApiInterceptor()
+    private val mockInterceptor = MockApiInterceptor(MockDataProvider(context))
 
     private val okHttpClient = OkHttpClient.Builder()
         .addInterceptor(loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY))

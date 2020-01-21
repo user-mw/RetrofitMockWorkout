@@ -4,16 +4,22 @@ import com.example.retrofitmockworkout.BuildConfig
 import okhttp3.*
 import okhttp3.Interceptor.Chain
 
-class MockApiInterceptor : Interceptor {
+class MockApiInterceptor(private val dataProvider: MockDataProvider) : Interceptor {
+
+    private companion object {
+        const val WRONG_ID = -1
+    }
 
     override fun intercept(chain: Chain): Response =
         if (BuildConfig.DEBUG) {
             val uri = chain.request().url().uri().toString()
 
-            val response = if (uri.contains(Regex("[0-9]"))) {
-                mockCar1
+            val id = getId(uri)
+
+            val response = if (id != WRONG_ID) {
+                dataProvider.read("car_$id.json")
             } else {
-                mockCars
+                dataProvider.read("cars.json")
             }
 
             chain.proceed(chain.request())
@@ -32,36 +38,14 @@ class MockApiInterceptor : Interceptor {
         } else {
             chain.proceed(chain.request()).newBuilder().build()
         }
-}
 
-private val mockCars = """
-    [
-        {
-            "id": 1,
-            "brand": "Mercedes-Benz",
-            "model": "E 220",
-            "year": 2016,
-            "color": "Dark blue",
-            "cost": "35000 euro"
-        },
-        {
-            "id": 2,
-            "brand": "Volkswagen",
-            "model": "Touareg",
-            "year": 2015,
-            "color": "Grey Canyon",
-            "cost": "39000 euro"
+    private fun getId(uriString: String): Int {
+        val chars = uriString.toCharArray()
+
+        return if (chars.last().isDigit()) {
+            chars.last().toString().toInt()
+        } else {
+            WRONG_ID
         }
-    ]
-""".trimIndent()
-
-private val mockCar1 = """
-    {
-        "id": 1,
-        "brand": "Mercedes-Benz",
-        "model": "E 220",
-        "year": 2016,
-        "color": "Dark blue",
-        "cost": "35000 euro"
     }
-""".trimIndent()
+}

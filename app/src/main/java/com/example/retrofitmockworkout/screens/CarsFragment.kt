@@ -41,7 +41,7 @@ class CarsFragment : Fragment(), CarsView, PresenterFactoryInjector {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        BadPresenterFactoryComponent().inject(this)
+        BadPresenterFactoryComponent(requireActivity()).inject(this)
         presenter = presenterFactory.create()
     }
 
