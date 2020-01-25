@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.retrofitmockworkout.R
-import com.example.retrofitmockworkout.custom_di.BadPresenterFactory
 import com.example.retrofitmockworkout.custom_di.BadPresenterFactoryComponent
 import com.example.retrofitmockworkout.custom_di.PresenterFactory
 import com.example.retrofitmockworkout.custom_di.PresenterFactoryInjector
@@ -66,11 +65,11 @@ class CarsFragment : Fragment(), CarsView, PresenterFactoryInjector {
     }
 
     override fun showEmptyMessage() {
-        Toast.makeText(requireActivity(), R.string.empty_message, Toast.LENGTH_LONG).show()
+        Toast.makeText(requireActivity(), R.string.empty_message, Toast.LENGTH_SHORT).show()
     }
 
     override fun showMessage(title: String) {
-        Toast.makeText(requireActivity(), title, Toast.LENGTH_LONG).show()
+        Toast.makeText(requireActivity(), title, Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {

@@ -2,12 +2,12 @@ package com.example.retrofitmockworkout.data.mock_api_server
 
 import android.content.Context
 
-class MockDataProvider(private val context: Context) {
+class MockDataReader(private val context: Context) {
 
-    fun read(fileName: String) =
+    fun read(fileName: String): String =
         readFromAsset(fileName)
 
-    private fun readFromAsset(fileName: String) =
+    private fun readFromAsset(fileName: String): String =
         String(readToBuffer(fileName))
 
     private fun readToBuffer(fileName: String): ByteArray {
